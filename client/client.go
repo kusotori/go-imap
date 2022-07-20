@@ -672,6 +672,10 @@ func DialWithDialerTLS(dialer Dialer, addr string, tlsConfig *tls.Config) (*Clie
 		tlsConfig.ServerName = serverName
 	}
 	tlsConn := tls.Client(conn, tlsConfig)
+	err := tlsConn.SetDeadline(time.Now().Add(time.Minute))
+	if err != nil {
+		return nil, err
+	}
 
 	// We don't return to the caller until we try to receive a greeting. As such,
 	// there is no way to set the client's Timeout for that action. As a
